@@ -1,0 +1,47 @@
+# Design and Usage Notes
+
+## 1. Overview
+This project implements a *many-to-one user-level thread library* with *preemptive round-robin* and *lottery scheduling*. The scheduler ensures that multiple user-level threads execute efficiently while running on a single kernel thread.  
+
+The primary objectives are:
+- Implementing a *preemptive round-robin scheduler*.
+- Implementing a *lottery scheduler*.
+- Demonstrating thread switching, preemption, and scheduling behavior.
+- Reconstructing one of *Waldspurger’s experiments* to evaluate lottery scheduling.
+
+## 2. Design Approach
+### 2.1 Thread Management
+- Each thread is represented by a *user-level context* using ucontext_t.
+- Context switching is handled using:
+  - getcontext()
+  - setcontext()
+  - makecontext()
+  - swapcontext()
+- Threads are stored in a *queue* and scheduled using round-robin or lottery scheduling.
+  
+### 2.2 Scheduling
+- *Round-Robin:* Each thread runs for a fixed time slice before switching.
+- *Lottery Scheduler:* Threads receive lottery tickets, and a *random ticket selection* determines the next thread to run.
+
+### 2.3 Preemption
+- A *timer interrupt (SIGALRM)* triggers the scheduler.
+- The scheduler *switches contexts* when a thread’s time slice expires.
+
+## 3. Testing and Verification
+### 3.1 Functional Testing
+- *Single Thread Execution:* Verified that a single thread initializes and runs correctly.
+- *Multiple Threads (Yielding):* Checked that multiple threads execute and yield properly.
+- *Round-Robin Scheduling:* Verified that threads are scheduled in a cyclic order.
+- *Lottery Scheduling:* Implemented ticket distribution and tested fairness.
+
+### 3.2 Performance Testing
+- *Reconstructed Waldspurger’s Experiment:* Implemented an experiment to compare round-robin and lottery scheduling performance.
+- *Thread Execution Timing:* Measured and compared execution times.
+
+## 4. ChatGPT Usage (If Any)
+[Include all ChatGPT prompts and responses here, if applicable.]
+
+## 5. Build Instructions
+- *Compile:* Run make to build the program.
+- *Execute:* Run ./program to start the thread scheduler.
+- *Clean:* Run make clean to remove compiled files.

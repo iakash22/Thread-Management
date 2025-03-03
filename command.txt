@@ -1,0 +1,15 @@
+make clean // remove compile files
+make test  // for all files compile
+
+# separate files compilation
+
+build/test1_single_thread
+build/test2_thread_yielding
+build/test3_round_robin
+build/test4_lottery
+build/test5_waldspurgerc
+build/test6_noval_exp
+
+# debug
+
+gdb ./myprogram
